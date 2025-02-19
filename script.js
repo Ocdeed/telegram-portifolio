@@ -402,17 +402,143 @@ function handleMessage() {
   }
 }
 
+class CardManager {
+  constructor(template, data, type) {
+    this.container = null;
+    this.currentIndex = 0;
+    this.data = data;
+    this.type = type;
+    this.maxIndex = Object.keys(data).length - 1;
+
+    // Create card from template
+    const content = template.content.cloneNode(true);
+    this.container = content.querySelector(".bento-container");
+
+    // Initialize navigation
+    this.prevBtn = this.container.querySelector(".prev");
+    this.nextBtn = this.container.querySelector(".next");
+    this.counter = this.container.querySelector(".counter");
+
+    this.setupNavigation();
+    this.update();
+
+    return this.container;
+  }
+
+  setupNavigation() {
+    this.prevBtn.onclick = () => this.navigate(-1);
+    this.nextBtn.onclick = () => this.navigate(1);
+  }
+
+  navigate(direction) {
+    const newIndex = this.currentIndex + direction;
+    if (newIndex >= 0 && newIndex <= this.maxIndex) {
+      this.currentIndex = newIndex;
+      this.update();
+    }
+  }
+
+  updateCounter() {
+    this.counter.textContent = `${this.currentIndex + 1} / ${
+      this.maxIndex + 1
+    }`;
+    this.prevBtn.disabled = this.currentIndex === 0;
+    this.nextBtn.disabled = this.currentIndex === this.maxIndex;
+  }
+
+  update() {
+    this.updateCounter();
+    const item = this.data[this.currentIndex + 1];
+
+    if (this.type === "project") {
+      this.updateProject(item);
+    } else {
+      this.updateService(item);
+    }
+  }
+
+  updateProject(project) {
+    const card = this.container.querySelector(".project-card");
+    const image = card.querySelector(".card-image");
+    const spinner = card.querySelector(".loading-spinner");
+
+    // Reset image state
+    image.style.opacity = "0";
+    spinner.classList.add("active");
+
+    // Load new image
+    const img = new Image();
+    img.onload = () => {
+      image.src = img.src;
+      image.style.opacity = "1";
+      spinner.classList.remove("active");
+    };
+    img.onerror = () => {
+      image.src =
+        "https://placehold.co/800x400/2481cc/ffffff?text=Project+Preview";
+      image.style.opacity = "1";
+      spinner.classList.remove("active");
+    };
+    img.src = project.image;
+
+    // Update text content
+    card.querySelector(".card-title").textContent = project.name;
+    card.querySelector(".card-description").textContent = project.description;
+    card.querySelector(".card-tech").textContent = project.tech;
+
+    // Update buttons
+    const demoBtn = card.querySelector(".card-btn.primary");
+    const codeBtn = card.querySelector(".card-btn.secondary");
+    demoBtn.href = project.preview;
+    codeBtn.href = project.code;
+  }
+
+  updateService(service) {
+    const card = this.container.querySelector(".service-card");
+    const icon = card.querySelector(".service-icon");
+
+    icon.className = `service-icon ${service.icon}`;
+    card.querySelector(".card-title").textContent = service.title;
+    card.querySelector(".card-description").textContent = service.description;
+    card.querySelector(".price").textContent = service.price;
+    card.querySelector(".duration").textContent = service.duration;
+
+    // Setup hire button
+    const hireBtn = card.querySelector(".hire-btn");
+    hireBtn.onclick = () => {
+      handleCommand("contact");
+      sendBotMessage(
+        `💡 Interested in my ${service.title.toLowerCase()} service? Let's discuss your project!`
+      );
+    };
+  }
+}
+
+// Update attachment functions
+function attachProjectListeners() {
+  const template = document.getElementById("project-cards-template");
+  return new CardManager(template, botInfo.projects, "project");
+}
+
+function attachServiceListeners() {
+  const template = document.getElementById("services-template");
+  return new CardManager(template, botInfo.services, "service");
+}
+
+// Update command handler
 function handleCommand(command) {
   switch (command) {
+    case "projects":
+      const projectCard = attachProjectListeners();
+      sendBotMessage("🚀 Here are some of my notable projects:", projectCard);
+      break;
+    case "services":
+      const serviceCard = attachServiceListeners();
+      sendBotMessage("💼 Here are the services I offer:", serviceCard);
+      break;
     case "skills":
       const skillsMsg = formatSkills(botInfo.skills);
       sendBotMessage(skillsMsg);
-      break;
-    case "projects":
-      const template = document.getElementById("project-cards-template");
-      const cards = template.content.cloneNode(true);
-      sendBotMessage("🚀 Here are some of my notable projects:", cards);
-      attachProjectListeners();
       break;
     case "contact":
       const contactTemplate = document.getElementById(
@@ -437,12 +563,6 @@ function handleCommand(command) {
       break;
     case "help":
       sendBotMessage(helpMessage);
-      break;
-    case "services":
-      const servicesTemplate = document.getElementById("services-template");
-      const services = servicesTemplate.content.cloneNode(true);
-      sendBotMessage("💼 Here are the services I offer:", services);
-      attachServiceListeners();
       break;
     default:
       sendBotMessage(
@@ -613,103 +733,135 @@ function formatSkills(skills) {
 
 let currentProjectIndex = 0;
 
-function attachProjectListeners() {
-  // Add small delay to ensure DOM is ready
-  setTimeout(() => {
-    const bentoCard = document.querySelector(".bento-card");
-    if (!bentoCard) return;
+// Add new utility function for handling bento cards
+class BentoCardManager {
+  constructor(cardElement, data, type = "project") {
+    this.card = cardElement;
+    this.data = data;
+    this.type = type;
+    this.currentIndex = 0;
+    this.maxIndex = Object.keys(data).length - 1;
 
-    let currentIndex = 0;
+    this.setupNavigation();
+    this.update(0);
+  }
 
-    function updateProject(index) {
-      const project = botInfo.projects[index + 1];
-      if (!project) return;
-
-      // Create and preload image
-      const img = new Image();
-      img.onload = () => {
-        const imageEl = bentoCard.querySelector(".bento-image");
-        imageEl.src = img.src;
-        imageEl.classList.remove("error");
-      };
-      img.onerror = () => {
-        const imageEl = bentoCard.querySelector(".bento-image");
-        imageEl.src =
-          "https://placehold.co/800x400/2481cc/ffffff?text=Project+Preview";
-        imageEl.classList.add("error");
-      };
-      img.src = project.image;
-
-      // Update text content immediately
-      bentoCard.querySelector(".bento-title").textContent = project.name;
-      bentoCard.querySelector(".bento-description").textContent =
-        project.description;
-      bentoCard.querySelector(".bento-tech").textContent = project.tech;
-      bentoCard.querySelector(".project-counter").textContent = `Project ${
-        index + 1
-      } of 5`;
-
-      // Update navigation buttons
-      const prevBtn = bentoCard.querySelector(".prev-btn");
-      const nextBtn = bentoCard.querySelector(".next-btn");
-      if (prevBtn) prevBtn.disabled = index === 0;
-      if (nextBtn) nextBtn.disabled = index === 4;
-    }
-
-    // Initialize first project immediately
-    updateProject(currentIndex);
-
-    // Set up navigation with direct event binding
-    const prevBtn = bentoCard.querySelector(".prev-btn");
-    const nextBtn = bentoCard.querySelector(".next-btn");
+  setupNavigation() {
+    const prevBtn = this.card.querySelector(".prev-btn");
+    const nextBtn = this.card.querySelector(".next-btn");
 
     if (prevBtn) {
-      prevBtn.onclick = () => {
-        if (currentIndex > 0) {
-          currentIndex--;
-          updateProject(currentIndex);
-        }
-      };
+      prevBtn.onclick = () => this.navigate(-1);
     }
-
     if (nextBtn) {
-      nextBtn.onclick = () => {
-        if (currentIndex < 4) {
-          currentIndex++;
-          updateProject(currentIndex);
-        }
-      };
+      nextBtn.onclick = () => this.navigate(1);
+    }
+  }
+
+  navigate(direction) {
+    const newIndex = this.currentIndex + direction;
+    if (newIndex >= 0 && newIndex <= this.maxIndex) {
+      this.currentIndex = newIndex;
+      this.update(this.currentIndex);
+    }
+  }
+
+  update(index) {
+    const item = this.data[index + 1];
+    if (!item) return;
+
+    // Update navigation state
+    const prevBtn = this.card.querySelector(".prev-btn");
+    const nextBtn = this.card.querySelector(".next-btn");
+    if (prevBtn) prevBtn.disabled = index === 0;
+    if (nextBtn) nextBtn.disabled = index === this.maxIndex;
+
+    // Update counter
+    const counter = this.card.querySelector(`.${this.type}-counter`);
+    if (counter) {
+      counter.textContent = `${
+        this.type.charAt(0).toUpperCase() + this.type.slice(1)
+      } ${index + 1} of ${this.maxIndex + 1}`;
     }
 
-    // Action buttons
-    const previewBtn = bentoCard.querySelector(
+    if (this.type === "project") {
+      this.updateProject(item);
+    } else {
+      this.updateService(item);
+    }
+  }
+
+  updateProject(project) {
+    const imageEl = this.card.querySelector(".bento-image");
+    const loadingOverlay = this.card.querySelector(".loading-overlay");
+
+    // Show loading state
+    if (imageEl && loadingOverlay) {
+      imageEl.classList.add("loading");
+      loadingOverlay.classList.add("active");
+
+      const img = new Image();
+      img.onload = () => {
+        imageEl.src = img.src;
+        imageEl.classList.remove("loading");
+        loadingOverlay.classList.remove("active");
+      };
+      img.onerror = () => {
+        imageEl.src =
+          "https://placehold.co/800x400/2481cc/ffffff?text=Project+Preview";
+        imageEl.classList.remove("loading");
+        loadingOverlay.classList.remove("active");
+      };
+      img.src = project.image;
+    }
+
+    // Update text content
+    this.card.querySelector(".bento-title").textContent = project.name;
+    this.card.querySelector(".bento-description").textContent =
+      project.description;
+    this.card.querySelector(".bento-tech").textContent = project.tech;
+
+    // Update action buttons
+    const previewBtn = this.card.querySelector(
       '[data-project-action="preview"]'
     );
-    const codeBtn = bentoCard.querySelector('[data-project-action="code"]');
+    const codeBtn = this.card.querySelector('[data-project-action="code"]');
 
     if (previewBtn) {
-      previewBtn.onclick = () => {
-        const project = botInfo.projects[currentIndex + 1];
-        window.open(project.preview, "_blank");
-      };
+      previewBtn.onclick = () => window.open(project.preview, "_blank");
     }
-
     if (codeBtn) {
-      codeBtn.onclick = () => {
-        const project = botInfo.projects[currentIndex + 1];
-        window.open(project.code, "_blank");
-      };
+      codeBtn.onclick = () => window.open(project.code, "_blank");
+    }
+  }
+
+  updateService(service) {
+    const icon = this.card.querySelector(".service-icon");
+    if (icon) {
+      icon.className = `service-icon ${service.icon}`;
     }
 
-    // View all projects button
-    const viewAllBtn = document.querySelector(".view-all-projects");
-    if (viewAllBtn) {
-      viewAllBtn.onclick = () => {
-        window.open(botInfo.githubProfile, "_blank");
-        sendBotMessage("🌟 Feel free to explore all my projects on GitHub!");
-      };
-    }
-  }, 100); // Small delay to ensure DOM is ready
+    this.card.querySelector(".service-title").textContent = service.title;
+    this.card.querySelector(".service-description").textContent =
+      service.description;
+    this.card.querySelector(".price").textContent = service.price;
+    this.card.querySelector(".duration").textContent = service.duration;
+  }
+}
+
+// Update the attachment functions
+function attachProjectListeners() {
+  const projectCard = document.querySelector(".project-card");
+  if (projectCard) {
+    new BentoCardManager(projectCard, botInfo.projects, "project");
+  }
+}
+
+function attachServiceListeners() {
+  const serviceCard = document.querySelector(".service-card");
+  if (serviceCard) {
+    new BentoCardManager(serviceCard, botInfo.services, "service");
+  }
 }
 
 function attachContactListeners() {
@@ -759,6 +911,11 @@ function attachContactListeners() {
 
 // Add new function for message selection handling
 function handleMessageSelection(messageElement) {
+  // Don't trigger selection if user is selecting text
+  if (window.getSelection().toString()) {
+    return;
+  }
+
   if (messageElement.classList.contains("selected-message")) {
     messageElement.classList.remove("selected-message");
     selectedMessages = selectedMessages.filter((msg) => msg !== messageElement);
@@ -793,6 +950,56 @@ function deleteSelectedMessages() {
   document.getElementById("delete-selected")?.remove();
 }
 
+function addCopyButton(messageElement) {
+  const messageContent = messageElement.querySelector(".message-content");
+  const messageText = messageElement.querySelector(".message-text");
+
+  // Create copy button
+  const copyButton = document.createElement("button");
+  copyButton.className = "copy-button";
+  copyButton.innerHTML = '<i class="fas fa-copy"></i>';
+
+  // Add copy functionality
+  copyButton.addEventListener("click", async () => {
+    try {
+      let textToCopy;
+      const selection = window.getSelection();
+
+      // Check if there's selected text within this message
+      if (
+        selection &&
+        !selection.isCollapsed &&
+        messageText.contains(selection.anchorNode) &&
+        messageText.contains(selection.focusNode)
+      ) {
+        // Use selected text
+        textToCopy = selection.toString();
+      } else {
+        // If no selection, copy entire message
+        textToCopy = messageText.innerHTML
+          .replace(/<br\s*\/?>/g, "\n")
+          .replace(/<[^>]+>/g, "");
+      }
+
+      await navigator.clipboard.writeText(textToCopy);
+
+      // Visual feedback
+      copyButton.classList.add("copied");
+      copyButton.innerHTML = '<i class="fas fa-check"></i>';
+
+      // Reset button after 2 seconds
+      setTimeout(() => {
+        copyButton.classList.remove("copied");
+        copyButton.innerHTML = '<i class="fas fa-copy"></i>';
+      }, 2000);
+    } catch (err) {
+      console.error("Failed to copy text:", err);
+    }
+  });
+
+  messageContent.appendChild(copyButton);
+}
+
 function addUserMessage(text) {
   // Save message to server
   saveMessageToServer({
@@ -818,6 +1025,7 @@ function addUserMessage(text) {
 
   message.querySelector(".message-text").textContent = text;
   message.querySelector(".timestamp").textContent = getCurrentTime();
+  addCopyButton(messageElement);
   chatArea.appendChild(message);
   scrollToBottom();
 }
@@ -881,6 +1089,7 @@ function sendBotMessage(text, extraContent = null) {
       message.querySelector(".message-content").appendChild(extraContent);
     }
 
+    addCopyButton(messageElement);
     chatArea.appendChild(message);
     scrollToBottom();
   }, delay);
@@ -896,73 +1105,4 @@ function getCurrentTime() {
 
 function scrollToBottom() {
   chatArea.scrollTop = chatArea.scrollHeight;
-}
-
-// Add service slider functionality
-function attachServiceListeners() {
-  setTimeout(() => {
-    const serviceCard = document.querySelector(".service-card");
-    if (!serviceCard) return;
-
-    let currentIndex = 0;
-
-    function updateService(index) {
-      const service = botInfo.services[index + 1];
-      if (!service) return;
-
-      const icon = serviceCard.querySelector(".service-icon");
-      icon.className = `service-icon ${service.icon}`;
-
-      serviceCard.querySelector(".service-title").textContent = service.title;
-      serviceCard.querySelector(".service-description").textContent =
-        service.description;
-      serviceCard.querySelector(".price").textContent = service.price;
-      serviceCard.querySelector(".duration").textContent = service.duration;
-      serviceCard.querySelector(".service-counter").textContent = `Service ${
-        index + 1
-      } of 5`;
-
-      const prevBtn = serviceCard.querySelector(".prev-btn");
-      const nextBtn = serviceCard.querySelector(".next-btn");
-      if (prevBtn) prevBtn.disabled = index === 0;
-      if (nextBtn) nextBtn.disabled = index === 4;
-    }
-
-    // Initialize first service
-    updateService(currentIndex);
-
-    // Navigation
-    const prevBtn = serviceCard.querySelector(".prev-btn");
-    const nextBtn = serviceCard.querySelector(".next-btn");
-
-    if (prevBtn) {
-      prevBtn.onclick = () => {
-        if (currentIndex > 0) {
-          currentIndex--;
-          updateService(currentIndex);
-        }
-      };
-    }
-
-    if (nextBtn) {
-      nextBtn.onclick = () => {
-        if (currentIndex < 4) {
-          currentIndex++;
-          updateService(currentIndex);
-        }
-      };
-    }
-
-    // Hire button
-    const hireBtn = serviceCard.querySelector(".hire-btn");
-    if (hireBtn) {
-      hireBtn.onclick = () => {
-        const service = botInfo.services[currentIndex + 1];
-        handleCommand("contact");
-        sendBotMessage(
-          `💡 Interested in my ${service.title.toLowerCase()} service? Let's discuss your project!`
-        );
-      };
-    }
-  }, 100);
 }

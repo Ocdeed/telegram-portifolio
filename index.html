@@ -232,63 +232,76 @@
       </div>
     </template>
 
+    <!-- Replace project cards template -->
     <template id="project-cards-template">
-      <div class="bento-slideshow">
-        <div class="bento-card">
-          <div class="bento-navigation">
-            <button class="nav-button prev-btn">
-              <i class="fas fa-chevron-left"></i>
-            </button>
-            <span class="project-counter"></span>
-            <button class="nav-button next-btn">
-              <i class="fas fa-chevron-right"></i>
-            </button>
+      <div class="bento-container">
+        <div class="bento-header">
+          <button class="nav-btn prev" disabled>
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <span class="counter">1 / 5</span>
+          <button class="nav-btn next">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+
+        <div class="bento-card project-card">
+          <div class="image-wrapper">
+            <div class="loading-spinner">
+              <i class="fas fa-circle-notch fa-spin"></i>
+            </div>
+            <img
+              class="card-image"
+              src=""
+              alt="Project preview"
+              loading="lazy"
+            />
           </div>
-          <div class="bento-content">
-            <img src="" alt="Project" class="bento-image" loading="lazy" />
-            <h3 class="bento-title"></h3>
-            <p class="bento-description"></p>
-            <div class="bento-tech"></div>
-            <div class="bento-actions">
-              <button
-                class="bento-button preview-btn"
-                data-project-action="preview"
-              >
+
+          <div class="card-content">
+            <h3 class="card-title"></h3>
+            <p class="card-description"></p>
+            <div class="card-tech"></div>
+
+            <div class="card-actions">
+              <a href="#" class="card-btn primary" target="_blank">
                 <i class="fas fa-eye"></i> Live Demo
-              </button>
-              <button class="bento-button code-btn" data-project-action="code">
+              </a>
+              <a href="#" class="card-btn secondary" target="_blank">
                 <i class="fas fa-code"></i> Source Code
-              </button>
+              </a>
             </div>
           </div>
         </div>
-        <button class="view-all-projects">
-          <i class="fab fa-github"></i> View All Projects on GitHub
-        </button>
       </div>
     </template>
 
+    <!-- Replace services template -->
     <template id="services-template">
-      <div class="bento-slideshow">
+      <div class="bento-container">
+        <div class="bento-header">
+          <button class="nav-btn prev" disabled>
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <span class="counter">1 / 5</span>
+          <button class="nav-btn next">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+
         <div class="bento-card service-card">
-          <div class="bento-navigation">
-            <button class="nav-button prev-btn">
-              <i class="fas fa-chevron-left"></i>
-            </button>
-            <span class="service-counter"></span>
-            <button class="nav-button next-btn">
-              <i class="fas fa-chevron-right"></i>
-            </button>
-          </div>
-          <div class="bento-content">
+          <div class="service-icon-wrap">
             <i class="service-icon"></i>
-            <h3 class="service-title"></h3>
-            <p class="service-description"></p>
-            <div class="service-pricing">
+          </div>
+
+          <div class="card-content">
+            <h3 class="card-title"></h3>
+            <p class="card-description"></p>
+            <div class="pricing">
               <span class="price"></span>
               <span class="duration"></span>
             </div>
-            <button class="hire-btn">
+            <button class="card-btn primary hire-btn">
               <i class="fas fa-handshake"></i> Hire Me
             </button>
           </div>

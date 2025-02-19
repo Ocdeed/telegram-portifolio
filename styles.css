@@ -582,42 +582,102 @@ body {
 .bento-slideshow {
   max-width: 600px;
   margin: 16px auto;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: slideIn 0.3s ease forwards;
 }
 
-.bento-navigation {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 16px;
+@keyframes slideIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.bento-card {
   background: var(--message-bg);
-  border-radius: 16px 16px 0 0;
-  border-bottom: 1px solid var(--border-color);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
 }
 
-.project-counter {
-  font-size: 14px;
-  color: var(--secondary-text);
+.image-container {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  background: var(--button-hover);
 }
 
-.nav-button {
-  background: none;
-  border: none;
-  color: var(--primary-color);
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 50%;
-  transition: all 0.3s ease;
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.loading-overlay.active {
   opacity: 1;
 }
 
-.nav-button:disabled {
+.bento-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s ease;
+}
+
+.bento-image.loading {
   opacity: 0.5;
-  cursor: not-allowed;
-  color: var(--secondary-text);
+}
+
+/* Service Card Specific Styles */
+.service-icon-container {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--primary-color);
+  color: white;
+}
+
+.service-icon {
+  font-size: 28px;
+}
+
+/* Navigation Improvements */
+.bento-navigation {
+  padding: 12px 16px;
+  background: var(--message-bg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.nav-button {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 50%;
+  transition: all 0.2s ease;
 }
 
 .nav-button:not(:disabled):hover {
   background: var(--button-hover);
+  transform: scale(1.1);
+}
+
+.nav-button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
 }
 
 /* Map Styles */
@@ -930,4 +990,236 @@ body {
 .hire-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(36, 129, 204, 0.2);
+}
+
+/* New Bento Card Styles */
+.bento-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 16px auto;
+  background: var(--message-bg);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: slideIn 0.3s ease forwards;
+}
+
+.bento-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--message-bg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.nav-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--primary-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.nav-btn:not(:disabled):hover {
+  background: var(--button-hover);
+}
+
+.counter {
+  font-size: 14px;
+  color: var(--secondary-text);
+}
+
+.bento-card {
+  padding: 16px;
+}
+
+.image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  background: var(--button-hover);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.loading-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--primary-color);
+  font-size: 24px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.loading-spinner.active {
+  opacity: 1;
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card-image.loaded {
+  opacity: 1;
+}
+
+.card-content {
+  padding: 16px 0 0;
+}
+
+.card-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 8px;
+}
+
+.card-description {
+  font-size: 14px;
+  color: var(--secondary-text);
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+.card-tech {
+  font-size: 12px;
+  color: var(--primary-color);
+  margin-bottom: 16px;
+}
+
+.card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.card-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.card-btn.primary {
+  background: var(--primary-color);
+  color: white;
+}
+
+.card-btn.secondary {
+  background: var(--button-hover);
+  color: var(--primary-color);
+}
+
+.card-btn:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+/* Service Card Specific Styles */
+.service-icon-wrap {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--primary-color);
+  color: white;
+}
+
+.service-icon {
+  font-size: 28px;
+}
+
+.pricing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin: 16px 0;
+}
+
+.price {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.duration {
+  font-size: 14px;
+  color: var(--secondary-text);
+}
+
+@keyframes slideIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Add text selection styles */
+.message-text {
+  user-select: text;
+  cursor: text;
+}
+
+.message.selected-message .message-text {
+  user-select: text;
+  cursor: text;
+}
+
+/* Add copy button styles */
+.copy-button {
+  display: none;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 4px;
+  background: var(--primary-color);
+  color: white;
+  font-size: 12px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.message-content:hover .copy-button {
+  display: block;
+  opacity: 1;
+}
+
+.copy-button:hover {
+  background: var(--primary-color);
+  opacity: 0.9;
+}
+
+.copy-button.copied {
+  background: #4caf50;
 }
