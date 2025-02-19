@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- SEO Meta Tags -->
+    <title>Octavian - Software Developer & Tech Consultant in Tanzania</title>
+    <meta
+      name="description"
+      content="Professional software developer and tech consultant based in Dar es Salaam, Tanzania. Specializing in web development, mobile apps, and SEO optimization."
+    />
+    <meta
+      name="keywords"
+      content="software developer, web development, mobile apps, SEO, Tanzania, Dar es Salaam, tech consultant"
+    />
+    <meta name="author" content="Octavian" />
+
+    <!-- Open Graph Tags -->
+    <meta
+      property="og:title"
+      content="Octavian - Software Developer & Tech Consultant"
+    />
+    <meta
+      property="og:description"
+      content="Professional software developer and tech consultant offering web development, mobile apps, and SEO services in Tanzania."
+    />
+    <meta
+      property="og:image"
+      content="https://api.dicebear.com/7.x/micah/svg?seed=boy&backgroundColor=b6e3f4"
+    />
+    <meta property="og:url" content="https://your-domain.com" />
+
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Octavian - Software Developer & Tech Consultant"
+    />
+    <meta
+      name="twitter:description"
+      content="Professional software developer and tech consultant in Tanzania"
+    />
+    <meta
+      name="twitter:image"
+      content="https://api.dicebear.com/7.x/micah/svg?seed=boy&backgroundColor=b6e3f4"
+    />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://your-domain.com" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png" />
+
+    <!-- Existing stylesheets -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Octavian",
+        "url": "https://your-domain.com",
+        "image": "https://api.dicebear.com/7.x/micah/svg?seed=boy&backgroundColor=b6e3f4",
+        "sameAs": [
+          "https://github.com/octavian",
+          "https://linkedin.com/in/octavian",
+          "https://twitter.com/octavian"
+        ],
+        "jobTitle": "Software Developer",
+        "worksFor": {
+          "@type": "Organization",
+          "name": "Freelance"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Dar es Salaam",
+          "addressCountry": "Tanzania"
+        }
+      }
+    </script>
+
+    <!-- Google Maps Script -->
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"
+    ></script>
+  </head>
+  <body class="light-theme" itemscope itemtype="https://schema.org/WebPage">
+    <header class="chat-header" role="banner">
+      <div class="profile-info">
+        <img
+          src="https://api.dicebear.com/7.x/micah/svg?seed=boy&backgroundColor=b6e3f4"
+          alt="Profile"
+          class="profile-pic"
+        />
+        <div class="header-text">
+          <h2>Octavian Bot</h2>
+          <span class="status">online</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="theme-toggle">
+          <i class="fas fa-moon"></i>
+        </button>
+      </div>
+    </header>
+
+    <main class="chat-container" role="main">
+      <div class="chat-area" id="chat-area">
+        <!-- Messages will be inserted here -->
+      </div>
+
+      <!-- Floating Action Button -->
+      <nav class="fab-container" role="navigation" aria-label="Quick actions">
+        <button class="fab-button main-fab">
+          <i class="fas fa-rocket"></i>
+        </button>
+        <div class="fab-options">
+          <button class="fab-button fab-option" data-command="projects">
+            <i class="fas fa-code"></i>
+            <span class="fab-label">Projects</span>
+          </button>
+          <button class="fab-button fab-option" data-command="skills">
+            <i class="fas fa-brain"></i>
+            <span class="fab-label">Skills</span>
+          </button>
+          <button class="fab-button fab-option" data-command="resume">
+            <i class="fas fa-file-alt"></i>
+            <span class="fab-label">Resume</span>
+          </button>
+          <button class="fab-button fab-option" data-command="contact">
+            <i class="fas fa-address-book"></i>
+            <span class="fab-label">Contact</span>
+          </button>
+        </div>
+      </nav>
+
+      <!-- Input Area -->
+      <div class="input-area">
+        <div class="input-container">
+          <input
+            type="text"
+            id="message-input"
+            placeholder="Write a message..."
+          />
+          <div class="input-actions">
+            <button id="attach-file">
+              <i class="fas fa-paperclip"></i>
+            </button>
+            <button id="send-message">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Message Templates -->
+    <template id="bot-message-template">
+      <div class="message bot-message">
+        <img
+          src="https://api.dicebear.com/7.x/micah/svg?seed=boy&backgroundColor=b6e3f4"
+          alt="Bot"
+          class="message-avatar"
+        />
+        <div class="message-content">
+          <div class="message-text"></div>
+          <div class="message-info">
+            <span class="timestamp"></span>
+            <i class="fas fa-check-double seen-check"></i>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <template id="user-message-template">
+      <div class="message user-message">
+        <div class="message-content">
+          <div class="message-text"></div>
+          <div class="message-info">
+            <span class="timestamp"></span>
+            <i class="fas fa-check-double seen-check"></i>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <!-- Button Group Templates -->
+    <template id="contact-buttons-template">
+      <div class="button-group">
+        <button class="telegram-button" data-action="email">
+          <i class="fas fa-envelope"></i> Send Email
+        </button>
+        <button class="telegram-button" data-action="whatsapp">
+          <i class="fab fa-whatsapp"></i> WhatsApp
+        </button>
+        <button class="telegram-button" data-action="phone">
+          <i class="fas fa-phone"></i> Call
+        </button>
+        <button class="telegram-button" data-action="linkedin">
+          <i class="fab fa-linkedin"></i> LinkedIn
+        </button>
+        <button class="telegram-button" data-action="twitter">
+          <i class="fab fa-twitter"></i> Twitter
+        </button>
+        <button class="telegram-button" data-action="github">
+          <i class="fab fa-github"></i> GitHub
+        </button>
+      </div>
+    </template>
+
+    <template id="project-buttons-template">
+      <div class="button-group">
+        <button class="telegram-button" data-project="1">
+          <i class="fas fa-code"></i> AI Chat Assistant
+        </button>
+        <button class="telegram-button" data-project="2">
+          <i class="fas fa-mobile-alt"></i> Mobile App
+        </button>
+        <button class="telegram-button" data-project="3">
+          <i class="fas fa-globe"></i> E-commerce Platform
+        </button>
+        <button class="telegram-button" data-project="4">
+          <i class="fas fa-robot"></i> ML Project
+        </button>
+      </div>
+    </template>
+
+    <template id="project-cards-template">
+      <div class="bento-slideshow">
+        <div class="bento-card">
+          <div class="bento-navigation">
+            <button class="nav-button prev-btn">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <span class="project-counter"></span>
+            <button class="nav-button next-btn">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+          <div class="bento-content">
+            <img src="" alt="Project" class="bento-image" loading="lazy" />
+            <h3 class="bento-title"></h3>
+            <p class="bento-description"></p>
+            <div class="bento-tech"></div>
+            <div class="bento-actions">
+              <button
+                class="bento-button preview-btn"
+                data-project-action="preview"
+              >
+                <i class="fas fa-eye"></i> Live Demo
+              </button>
+              <button class="bento-button code-btn" data-project-action="code">
+                <i class="fas fa-code"></i> Source Code
+              </button>
+            </div>
+          </div>
+        </div>
+        <button class="view-all-projects">
+          <i class="fab fa-github"></i> View All Projects on GitHub
+        </button>
+      </div>
+    </template>
+
+    <template id="services-template">
+      <div class="bento-slideshow">
+        <div class="bento-card service-card">
+          <div class="bento-navigation">
+            <button class="nav-button prev-btn">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <span class="service-counter"></span>
+            <button class="nav-button next-btn">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+          <div class="bento-content">
+            <i class="service-icon"></i>
+            <h3 class="service-title"></h3>
+            <p class="service-description"></p>
+            <div class="service-pricing">
+              <span class="price"></span>
+              <span class="duration"></span>
+            </div>
+            <button class="hire-btn">
+              <i class="fas fa-handshake"></i> Hire Me
+            </button>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <template id="location-template">
+      <div class="location-card">
+        <div id="map" class="map-container"></div>
+        <div class="location-details">
+          <i class="fas fa-map-marker-alt"></i>
+          <span class="location-text"></span>
+        </div>
+      </div>
+    </template>
+
+    <template id="typing-indicator-template">
+      <div class="message bot-message typing-indicator">
+        <img
+          src="https://api.dicebear.com/7.x/micah/svg?seed=boy&backgroundColor=b6e3f4"
+          alt="Bot"
+          class="message-avatar"
+        />
+        <div class="typing-animation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </template>
+
+    <template id="command-suggestions-template">
+      <div class="command-suggestions">
+        <div class="command-item" data-command="help">
+          <i class="fas fa-question-circle"></i>
+          <div class="command-info">
+            <span class="command-name">/help</span>
+            <span class="command-desc">Show available commands</span>
+          </div>
+        </div>
+        <div class="command-item" data-command="skills">
+          <i class="fas fa-brain"></i>
+          <div class="command-info">
+            <span class="command-name">/skills</span>
+            <span class="command-desc">View my technical skills</span>
+          </div>
+        </div>
+        <div class="command-item" data-command="projects">
+          <i class="fas fa-code"></i>
+          <div class="command-info">
+            <span class="command-name">/projects</span>
+            <span class="command-desc">Browse my portfolio</span>
+          </div>
+        </div>
+        <div class="command-item" data-command="contact">
+          <i class="fas fa-address-book"></i>
+          <div class="command-info">
+            <span class="command-name">/contact</span>
+            <span class="command-desc">Get my contact details</span>
+          </div>
+        </div>
+        <div class="command-item" data-command="location">
+          <i class="fas fa-map-marker-alt"></i>
+          <div class="command-info">
+            <span class="command-name">/location</span>
+            <span class="command-desc">See where I'm based</span>
+          </div>
+        </div>
+        <div class="command-item" data-command="resume">
+          <i class="fas fa-file-alt"></i>
+          <div class="command-info">
+            <span class="command-name">/resume</span>
+            <span class="command-desc">Download my CV</span>
+          </div>
+        </div>
+        <div class="command-item" data-command="clear">
+          <i class="fas fa-broom"></i>
+          <div class="command-info">
+            <span class="command-name">/clear</span>
+            <span class="command-desc">Clear chat history</span>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <script src="script.js" defer></script>
+  </body>
+</html>
