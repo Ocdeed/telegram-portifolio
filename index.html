@@ -158,6 +158,10 @@
           <i class="fas fa-address-book"></i>
           <span class="fab-label">Contact</span>
         </button>
+        <button class="fab-button fab-option" data-command="services">
+          <i class="fas fa-briefcase"></i>
+          <span class="fab-label">Services</span>
+        </button>
       </div>
     </nav>
 
@@ -304,6 +308,33 @@
               <i class="fas fa-handshake"></i> Hire Me
             </button>
           </div>
+        </div>
+      </div>
+    </template>
+
+    <template id="services-cards-template">
+      <div class="services-showcase">
+        <div class="bento-grid">
+          <!-- Cards will be dynamically inserted here -->
+        </div>
+      </div>
+    </template>
+
+    <template id="service-card-template">
+      <div class="bento-card service-card">
+        <div class="service-icon-container">
+          <i class="service-icon"></i>
+        </div>
+        <div class="card-content">
+          <h3 class="service-title"></h3>
+          <p class="service-description"></p>
+          <div class="service-pricing">
+            <span class="price"></span>
+            <span class="duration"></span>
+          </div>
+          <button class="action-btn hire-btn">
+            <i class="fas fa-handshake"></i> Hire Me
+          </button>
         </div>
       </div>
     </template>

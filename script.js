@@ -532,8 +532,7 @@ function handleCommand(command) {
       displayProjects();
       break;
     case "services":
-      const serviceCard = attachServiceListeners();
-      sendBotMessage("💼 Here are the services I offer:", serviceCard);
+      displayServices();
       break;
     case "skills":
       const skillsMsg = formatSkills(botInfo.skills);
@@ -1145,4 +1144,39 @@ function displayProjects() {
   });
 
   sendBotMessage("🚀 Here are some of my notable projects:", showcase);
+}
+
+function displayServices() {
+  const template = document.getElementById("services-cards-template");
+  const cardTemplate = document.getElementById("service-card-template");
+  const showcase = template.content.cloneNode(true);
+  const grid = showcase.querySelector(".bento-grid");
+
+  // Create and append each service card
+  Object.values(botInfo.services).forEach((service) => {
+    const card = cardTemplate.content.cloneNode(true);
+
+    // Set card content
+    const icon = card.querySelector(".service-icon");
+    icon.className = `service-icon ${service.icon}`;
+
+    card.querySelector(".service-title").textContent = service.title;
+    card.querySelector(".service-description").textContent =
+      service.description;
+    card.querySelector(".price").textContent = service.price;
+    card.querySelector(".duration").textContent = service.duration;
+
+    // Add hire button click handler
+    const hireBtn = card.querySelector(".hire-btn");
+    hireBtn.onclick = () => {
+      handleCommand("contact");
+      sendBotMessage(
+        `💡 Interested in my ${service.title.toLowerCase()} service? Let's discuss your project!`
+      );
+    };
+
+    grid.appendChild(card);
+  });
+
+  sendBotMessage("💼 Here are the services I offer:", showcase);
 }
