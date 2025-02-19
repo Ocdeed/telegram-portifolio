@@ -25,12 +25,12 @@ const botInfo = {
   location: "Dar es Salaam, Tanzania",
   resume: "./assets/Octavian_Resume.pdf", // Update this path to match your actual resume file
   contacts: {
-    email: "octavian@example.com",
-    whatsapp: "+255123456789",
-    phone: "+255123456789",
-    linkedin: "https://linkedin.com/in/octavian",
-    twitter: "https://twitter.com/octavian",
-    github: "https://github.com/octavian",
+    email: "your.email@gmail.com", // Replace with your real email
+    whatsapp: "+255123456789", // Replace with your real WhatsApp number
+    phone: "+255123456789", // Replace with your real phone number
+    linkedin: "https://linkedin.com/in/your-profile", // Replace with your LinkedIn URL
+    twitter: "https://twitter.com/your-handle", // Replace with your Twitter URL
+    github: "https://github.com/your-username", // Replace with your GitHub URL
   },
   skills: {
     programming: ["Python", "JavaScript", "Java", "C++"],
@@ -535,8 +535,8 @@ function handleCommand(command) {
       displayServices();
       break;
     case "skills":
-      const skillsMsg = formatSkills(botInfo.skills);
-      sendBotMessage(skillsMsg);
+      const skillsShowcase = formatSkills(botInfo.skills);
+      sendBotMessage("🎯 Here are my skills and expertise:", skillsShowcase);
       break;
     case "contact":
       const contactTemplate = document.getElementById(
@@ -547,7 +547,6 @@ function handleCommand(command) {
         "📱 Let's connect! Choose how you'd like to reach me:",
         contactButtons
       );
-      attachContactListeners();
       break;
     case "location":
       showLocation();
@@ -720,13 +719,48 @@ Available information:
 
 // Utility Functions
 function formatSkills(skills) {
-  return `🎯 My Skills:
+  const template = document.getElementById("skills-showcase-template");
+  const showcase = template.content.cloneNode(true);
 
-💻 Programming: ${skills.programming.join(", ")}
-🌐 Web Technologies: ${skills.web.join(", ")}
-🗄️ Databases: ${skills.database.join(", ")}
-🛠️ Tools & Platforms: ${skills.tools.join(", ")}
-🤝 Soft Skills: ${skills.soft.join(", ")}`;
+  // Helper function to create skill tags
+  const createSkillTag = (skill, icon) => {
+    const tag = document.createElement("div");
+    tag.className = "skill-tag";
+    tag.innerHTML = `<i class="${icon}"></i>${skill}`;
+    return tag;
+  };
+
+  // Add programming skills
+  const programmingTags = showcase.querySelector(".programming .skill-tags");
+  skills.programming.forEach((skill) => {
+    programmingTags.appendChild(createSkillTag(skill, "fas fa-code"));
+  });
+
+  // Add web technologies
+  const webTags = showcase.querySelector(".web .skill-tags");
+  skills.web.forEach((skill) => {
+    webTags.appendChild(createSkillTag(skill, "fas fa-globe"));
+  });
+
+  // Add database skills
+  const dbTags = showcase.querySelector(".database .skill-tags");
+  skills.database.forEach((skill) => {
+    dbTags.appendChild(createSkillTag(skill, "fas fa-database"));
+  });
+
+  // Add tools & platforms
+  const toolsTags = showcase.querySelector(".tools .skill-tags");
+  skills.tools.forEach((skill) => {
+    toolsTags.appendChild(createSkillTag(skill, "fas fa-tools"));
+  });
+
+  // Add soft skills
+  const softTags = showcase.querySelector(".soft .skill-tags");
+  skills.soft.forEach((skill) => {
+    softTags.appendChild(createSkillTag(skill, "fas fa-star"));
+  });
+
+  return showcase;
 }
 
 let currentProjectIndex = 0;
@@ -870,19 +904,19 @@ function attachContactListeners() {
 
       switch (action) {
         case "email":
-          window.location.href = `mailto:${contact}?subject=Getting%20in%20touch&body=Hi%20Octavian,%0A%0AI%20found%20your%20portfolio%20and%20would%20like%20to%20connect.`;
+          window.open(
+            `mailto:${contact}?subject=Business Inquiry&body=Hi, I'm interested in working with you.`
+          );
           sendBotMessage(
             `📧 Opening email client to contact me at: ${contact}`
           );
           break;
 
         case "whatsapp":
+          // Remove any non-numeric characters for WhatsApp link
+          const whatsappNumber = contact.replace(/\D/g, "");
           window.open(
-            `https://wa.me/${contact.replace(
-              /\+/g,
-              ""
-            )}?text=Hi%20Octavian,%20I%20found%20your%20portfolio!`,
-            "_blank"
+            `https://wa.me/${whatsappNumber}?text=Hi, I found your portfolio and I'm interested in your services!`
           );
           sendBotMessage(`💬 Opening WhatsApp to chat with me: ${contact}`);
           break;

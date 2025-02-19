@@ -198,22 +198,46 @@
     <!-- Button Group Templates -->
     <template id="contact-buttons-template">
       <div class="button-group">
-        <button class="telegram-button" data-action="email">
+        <button
+          class="telegram-button"
+          data-action="email"
+          aria-label="Send email"
+        >
           <i class="fas fa-envelope"></i> Send Email
         </button>
-        <button class="telegram-button" data-action="whatsapp">
+        <button
+          class="telegram-button"
+          data-action="whatsapp"
+          aria-label="Contact on WhatsApp"
+        >
           <i class="fab fa-whatsapp"></i> WhatsApp
         </button>
-        <button class="telegram-button" data-action="phone">
+        <button
+          class="telegram-button"
+          data-action="phone"
+          aria-label="Make a phone call"
+        >
           <i class="fas fa-phone"></i> Call
         </button>
-        <button class="telegram-button" data-action="linkedin">
+        <button
+          class="telegram-button"
+          data-action="linkedin"
+          aria-label="View LinkedIn profile"
+        >
           <i class="fab fa-linkedin"></i> LinkedIn
         </button>
-        <button class="telegram-button" data-action="twitter">
+        <button
+          class="telegram-button"
+          data-action="twitter"
+          aria-label="View Twitter profile"
+        >
           <i class="fab fa-twitter"></i> Twitter
         </button>
-        <button class="telegram-button" data-action="github">
+        <button
+          class="telegram-button"
+          data-action="github"
+          aria-label="View GitHub profile"
+        >
           <i class="fab fa-github"></i> GitHub
         </button>
       </div>
@@ -413,6 +437,43 @@
           <div class="command-info">
             <span class="command-name">/clear</span>
             <span class="command-desc">Clear chat history</span>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <!-- Add this new template before the closing body tag -->
+    <template id="skills-showcase-template">
+      <div class="skills-showcase">
+        <div class="skills-grid">
+          <div class="skill-category technical-skills">
+            <h3><i class="fas fa-code"></i> Technical Skills</h3>
+            <div class="skills-container">
+              <div class="skill-group programming">
+                <h4><i class="fas fa-laptop-code"></i> Programming</h4>
+                <div class="skill-tags"></div>
+              </div>
+              <div class="skill-group web">
+                <h4><i class="fas fa-globe"></i> Web Technologies</h4>
+                <div class="skill-tags"></div>
+              </div>
+              <div class="skill-group database">
+                <h4><i class="fas fa-database"></i> Databases</h4>
+                <div class="skill-tags"></div>
+              </div>
+              <div class="skill-group tools">
+                <h4><i class="fas fa-tools"></i> Tools & Platforms</h4>
+                <div class="skill-tags"></div>
+              </div>
+            </div>
+          </div>
+          <div class="skill-category soft-skills">
+            <h3><i class="fas fa-brain"></i> Soft Skills</h3>
+            <div class="skills-container">
+              <div class="skill-group soft">
+                <div class="skill-tags"></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
