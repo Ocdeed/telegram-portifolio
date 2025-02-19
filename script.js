@@ -529,8 +529,7 @@ function attachServiceListeners() {
 function handleCommand(command) {
   switch (command) {
     case "projects":
-      const projectCard = attachProjectListeners();
-      sendBotMessage("🚀 Here are some of my notable projects:", projectCard);
+      displayProjects();
       break;
     case "services":
       const serviceCard = attachServiceListeners();
@@ -1105,4 +1104,45 @@ function getCurrentTime() {
 
 function scrollToBottom() {
   chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+function displayProjects() {
+  const template = document.getElementById("project-cards-template");
+  const cardTemplate = document.getElementById("project-card-template");
+  const showcase = template.content.cloneNode(true);
+  const grid = showcase.querySelector(".bento-grid");
+  const viewAllBtn = showcase.querySelector(".view-all-btn");
+
+  // Set GitHub profile link
+  viewAllBtn.href = botInfo.githubProfile;
+
+  // Create and append each project card
+  Object.values(botInfo.projects).forEach((project) => {
+    const card = cardTemplate.content.cloneNode(true);
+
+    // Set card content
+    const image = card.querySelector(".project-image");
+    const loadingOverlay = card.querySelector(".loading-overlay");
+    card.querySelector(".project-title").textContent = project.name;
+    card.querySelector(".project-description").textContent =
+      project.description;
+    card.querySelector(".project-tech").textContent = project.tech;
+
+    // Set button links
+    card.querySelector(".preview-btn").href = project.preview;
+    card.querySelector(".code-btn").href = project.code;
+
+    // Handle image loading
+    image.onload = () => loadingOverlay.classList.add("hidden");
+    image.onerror = () => {
+      image.src =
+        "https://placehold.co/800x400/2481cc/ffffff?text=Project+Preview";
+      loadingOverlay.classList.add("hidden");
+    };
+    image.src = project.image;
+
+    grid.appendChild(card);
+  });
+
+  sendBotMessage("🚀 Here are some of my notable projects:", showcase);
 }

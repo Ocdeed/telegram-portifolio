@@ -234,43 +234,42 @@
 
     <!-- Replace project cards template -->
     <template id="project-cards-template">
-      <div class="bento-container">
-        <div class="bento-header">
-          <button class="nav-btn prev" disabled>
-            <i class="fas fa-chevron-left"></i>
-          </button>
-          <span class="counter">1 / 5</span>
-          <button class="nav-btn next">
-            <i class="fas fa-chevron-right"></i>
-          </button>
+      <div class="projects-showcase">
+        <div class="bento-grid">
+          <!-- Cards will be dynamically inserted here -->
         </div>
+        <a href="#" class="view-all-btn" target="_blank">
+          <i class="fab fa-github"></i>
+          View All Projects on GitHub
+        </a>
+      </div>
+    </template>
 
-        <div class="bento-card project-card">
-          <div class="image-wrapper">
-            <div class="loading-spinner">
-              <i class="fas fa-circle-notch fa-spin"></i>
-            </div>
-            <img
-              class="card-image"
-              src=""
-              alt="Project preview"
-              loading="lazy"
-            />
+    <!-- Add this new template -->
+    <template id="project-card-template">
+      <div class="bento-card">
+        <div class="image-container">
+          <div class="loading-overlay">
+            <i class="fas fa-spinner fa-spin"></i>
           </div>
-
-          <div class="card-content">
-            <h3 class="card-title"></h3>
-            <p class="card-description"></p>
-            <div class="card-tech"></div>
-
-            <div class="card-actions">
-              <a href="#" class="card-btn primary" target="_blank">
-                <i class="fas fa-eye"></i> Live Demo
-              </a>
-              <a href="#" class="card-btn secondary" target="_blank">
-                <i class="fas fa-code"></i> Source Code
-              </a>
-            </div>
+          <img
+            class="project-image"
+            src=""
+            alt="Project Preview"
+            loading="lazy"
+          />
+        </div>
+        <div class="card-content">
+          <h3 class="project-title"></h3>
+          <p class="project-description"></p>
+          <div class="project-tech"></div>
+          <div class="card-actions">
+            <a href="#" class="action-btn preview-btn" target="_blank">
+              <i class="fas fa-eye"></i> Live Preview
+            </a>
+            <a href="#" class="action-btn code-btn" target="_blank">
+              <i class="fas fa-code"></i> View Code
+            </a>
           </div>
         </div>
       </div>
