@@ -55,19 +55,34 @@ body {
   background: var(--bg-color);
   color: var(--text-color);
   height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
 
+/* Main container */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: var(--chat-bg);
+}
+
+/* Update main layout styles */
 .chat-container {
   max-width: 1200px;
   margin: 0 auto;
   height: 100vh;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
   background: var(--chat-bg);
   position: relative;
+  overflow: hidden; /* Prevent container scroll */
 }
 
-/* Header Styles */
+/* Update header styles */
 .chat-header {
   background: var(--header-bg);
   padding: 12px 16px;
@@ -78,8 +93,49 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
+  flex-shrink: 0; /* Prevent header from shrinking */
 }
 
+/* Update chat area styles */
+.chat-area {
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 16px;
+  background-image: url("https://i.imgur.com/ZaWUcProj.jpg");
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  height: auto; /* Adjust based on header and input heights */
+  flex: 1;
+  scroll-behavior: smooth;
+}
+
+/* Add smooth scrolling */
+.chat-area {
+  scroll-behavior: smooth;
+}
+
+/* Adjust mobile styles */
+@media (max-width: 768px) {
+  .chat-area {
+    height: calc(100vh - 120px); /* Adjust for mobile header/input sizes */
+  }
+}
+
+/* Update input area styles */
+.input-area {
+  background: var(--input-bg);
+  padding: 12px 16px;
+  border-top: 1px solid var(--border-color);
+  position: sticky;
+  bottom: 0;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  flex-shrink: 0; /* Prevent input from shrinking */
+}
+
+/* Header Styles */
 .profile-info {
   display: flex;
   align-items: center;

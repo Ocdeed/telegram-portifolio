@@ -93,56 +93,30 @@
     ></script>
   </head>
   <body class="light-theme" itemscope itemtype="https://schema.org/WebPage">
-    <header class="chat-header" role="banner">
-      <div class="profile-info">
-        <img
-          src="https://api.dicebear.com/7.x/micah/svg?seed=boy&backgroundColor=b6e3f4"
-          alt="Profile"
-          class="profile-pic"
-        />
-        <div class="header-text">
-          <h2>Octavian Bot</h2>
-          <span class="status">online</span>
+    <div class="app-container">
+      <header class="chat-header" role="banner">
+        <div class="profile-info">
+          <img
+            src="https://api.dicebear.com/7.x/micah/svg?seed=boy&backgroundColor=b6e3f4"
+            alt="Profile"
+            class="profile-pic"
+          />
+          <div class="header-text">
+            <h2>Octavian Bot</h2>
+            <span class="status">online</span>
+          </div>
         </div>
-      </div>
-      <div class="header-actions">
-        <button id="theme-toggle">
-          <i class="fas fa-moon"></i>
-        </button>
-      </div>
-    </header>
+        <div class="header-actions">
+          <button id="theme-toggle">
+            <i class="fas fa-moon"></i>
+          </button>
+        </div>
+      </header>
 
-    <main class="chat-container" role="main">
-      <div class="chat-area" id="chat-area">
+      <main class="chat-area" id="chat-area">
         <!-- Messages will be inserted here -->
-      </div>
+      </main>
 
-      <!-- Floating Action Button -->
-      <nav class="fab-container" role="navigation" aria-label="Quick actions">
-        <button class="fab-button main-fab">
-          <i class="fas fa-rocket"></i>
-        </button>
-        <div class="fab-options">
-          <button class="fab-button fab-option" data-command="projects">
-            <i class="fas fa-code"></i>
-            <span class="fab-label">Projects</span>
-          </button>
-          <button class="fab-button fab-option" data-command="skills">
-            <i class="fas fa-brain"></i>
-            <span class="fab-label">Skills</span>
-          </button>
-          <button class="fab-button fab-option" data-command="resume">
-            <i class="fas fa-file-alt"></i>
-            <span class="fab-label">Resume</span>
-          </button>
-          <button class="fab-button fab-option" data-command="contact">
-            <i class="fas fa-address-book"></i>
-            <span class="fab-label">Contact</span>
-          </button>
-        </div>
-      </nav>
-
-      <!-- Input Area -->
       <div class="input-area">
         <div class="input-container">
           <input
@@ -160,7 +134,32 @@
           </div>
         </div>
       </div>
-    </main>
+    </div>
+
+    <!-- Floating Action Button -->
+    <nav class="fab-container" role="navigation" aria-label="Quick actions">
+      <button class="fab-button main-fab">
+        <i class="fas fa-rocket"></i>
+      </button>
+      <div class="fab-options">
+        <button class="fab-button fab-option" data-command="projects">
+          <i class="fas fa-code"></i>
+          <span class="fab-label">Projects</span>
+        </button>
+        <button class="fab-button fab-option" data-command="skills">
+          <i class="fas fa-brain"></i>
+          <span class="fab-label">Skills</span>
+        </button>
+        <button class="fab-button fab-option" data-command="resume">
+          <i class="fas fa-file-alt"></i>
+          <span class="fab-label">Resume</span>
+        </button>
+        <button class="fab-button fab-option" data-command="contact">
+          <i class="fas fa-address-book"></i>
+          <span class="fab-label">Contact</span>
+        </button>
+      </div>
+    </nav>
 
     <!-- Message Templates -->
     <template id="bot-message-template">
